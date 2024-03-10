@@ -53,10 +53,10 @@ ft_strcmp:
 _startLoop:
 	mov rax, 0
 	mov rbx, 0
-	mov byte ah, [rdi]
-	mov byte bh, [rsi]
-	cmp byte rax, rbx
-_break1:
+	mov byte al, [rdi]
+	mov byte bl, [rsi]
+	sub rax, rbx
+	cmp byte rax, 0
 	jne _endLoop
 	; check if rdi has reached 0
 	cmp byte [rdi], 0
@@ -65,19 +65,9 @@ _break1:
 	cmp byte [rsi], 0
 	jz _endLoop
 	; continue loop
-_break2:
 	inc rdi
 	inc rsi
 	jmp _startLoop
 _endLoop:
-_break3:
-	mov qword rax, 0
-	mov qword rbx, 0
-_break4:
-	mov byte al, [rdi]
-	mov byte bl, [rsi]
-_break5:
-	sub rax, rbx
-_break6:
 	ret
 
