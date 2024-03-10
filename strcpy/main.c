@@ -13,9 +13,9 @@ int	main(void)
 	char	*ret;
 
 	ret = strcpy(dst, src);
-	printf("%s - %p %p %p\n", dst, ret, dst, src);
+	printf("%s - %p %p %p\n", ret, ret, dst, src);
 	ret = ft_strcpy(dst, src);
-	printf("%s - %p %p %p\n", dst, ret, dst, src);
+	printf("%s - %p %p %p\n", ret, ret, dst, src);
 	free(dst);
 	return (0);
 }

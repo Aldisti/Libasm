@@ -5,34 +5,37 @@
 ; Make the executable:
 ; $> ld hello.o -o hello
 
+section .note.GNU-stack
+
 section .text
 	global ft_strcpy
 
 ; INPUT
-; rdi: (char *) is the destination
-; rsi: (char *) is the source
+; rdi: is the destination
+; rsi: is the source
 ; RUNTIME
 ; rax: used to write dst
-; rbx: bl: (char) used as tmp
+; rbx: used as tmp
 ; rcx:
 ; rdi:
+; rdx:
 ; rsi: used to read src
 ; OUTPUT
-; rax: (char *) is the destination
+; rax: is the destination
 ft_strcpy:
 	push rbx
 	mov rax, rdi
 	push rdi
 
-_startLoop:
+_start:
 	mov bl, [rsi]
 	mov [rax], bl
+	cmp byte [rsi], 0
+	je _end
 	inc rax
 	inc rsi
-	cmp byte [rsi], 0
-	jne _startLoop
-_endLoop:
-
+	jmp _start
+_end:
 	pop rax
 	pop rbx
 	ret
