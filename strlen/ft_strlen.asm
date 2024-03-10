@@ -1,26 +1,30 @@
 
+; $> nasm -f elf64 *.o
 
-; Compile the file with:
-; $> nasm -f elf64 -o hello.o hello.asm
-; Make the executable:
-; $> ld hello.o -o hello
+section .note.GNU-stack
 
 section .text
 	global ft_strlen
 
+; INPUT
+; rdi: pointer to string
+; RUNTIME
+; rax: used to keep count
+; rbx:
+; rcx:
+; rdx:
+; rsi:
+; rdi:
+; OUTPUT
+; rax: the string length
 ft_strlen:
-	push rbx
-	mov rbx, 0
+	mov rax, 0
+_start:
 	cmp byte [rdi], 0
-	je _endLoop
-_startLoop:
+	je _end
 	inc rdi
-	inc rbx
-	mov cl, [rdi]
-	cmp cl, 0
-	jne _startLoop
-_endLoop:
-	mov rax, rbx
-	pop rbx
+	inc rax
+	jmp _start
+_end:
 	ret
 
