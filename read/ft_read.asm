@@ -1,6 +1,8 @@
 
 ; nasm -f elf64 *.asm
-; gcc main.c *.o
+; gcc -no-pie main.c *.o
+
+extern __errno_location
 
 section .note.GNU-stack
 
@@ -26,5 +28,15 @@ ft_read:
 	; rsi already set
 	; rdx already set
 	syscall
+	cmp rax, 0
+	jl _syscallFail
+	ret
+
+_syscallFail:
+	neg rax
+	push rax
+	call __errno_location
+	pop qword [rax]
+	mov rax, -1
 	ret
 
