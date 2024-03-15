@@ -2,13 +2,11 @@
 ; nasm -f elf64 *.asm
 ; gcc -no-pie main.c *.o
 
-extern __errno_location
-extern malloc
-
 section .note.GNU-stack
 
 section .text
 	global ft_strdup
+	extern malloc
 
 ; INPUT
 ; rdi: pointer to string to dup
@@ -35,7 +33,7 @@ _start_strlen:
 _end_strlen:
 	; allocate rbx bytes with malloc
 	mov rdi, rbx
-	call malloc
+	call malloc wrt ..plt
 	pop rdi
 	
 	cmp rax, 0
@@ -55,16 +53,6 @@ _end_copy:
 	pop rax
 
 _end:
-	pop rbx
-	ret
-
-_syscallFail:
-	neg rax
-	push rax
-	call __errno_location
-	pop qword [rax]
-	mov rax, -1
-
 	pop rbx
 	ret
 

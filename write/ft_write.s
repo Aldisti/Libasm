@@ -2,12 +2,11 @@
 ; nasm -f elf64 *.asm
 ; gcc main.c *.o
 
-extern __errno_location
-
 section .note.GNU-stack
 
 section .text
 	global ft_write
+	extern __errno_location
 
 ; INPUT
 ; rdi: (int) fd
@@ -35,7 +34,7 @@ ft_write:
 _syscallFail:
 	neg rax
 	push rax
-	call __errno_location
+	call __errno_location wrt ..plt
 	pop qword [rax]
 	mov rax, -1
 	ret

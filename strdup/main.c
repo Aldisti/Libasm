@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
+extern void	*malloc(size_t);
 extern char	*ft_strdup(char *);
 
 void	test(char *str)

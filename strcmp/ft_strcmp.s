@@ -19,7 +19,7 @@ section .text
 ; OUTPUT
 ; rax: (byte) is the difference
 ft_strcmp:
-_startLoop:
+_start_loop:
 	; set rax and rbx to 0
 	mov rax, 0
 	mov rbx, 0
@@ -29,20 +29,20 @@ _startLoop:
 
 	; main condition
 	sub rax, rbx
-	cmp byte rax, 0
-	jne _endLoop
+	cmp rax, 0
+	jne _end_loop
 
 	; check if rdi has reached 0
 	cmp byte [rdi], 0
-	jz _endLoop
+	jz _end_loop
 	; check if rsi has reached 0
 	cmp byte [rsi], 0
-	jz _endLoop
+	jz _end_loop
 
 	; continue the loop
 	inc rdi
 	inc rsi
-	jmp _startLoop
-_endLoop:
+	jmp _start_loop
+_end_loop:
 	ret
 
