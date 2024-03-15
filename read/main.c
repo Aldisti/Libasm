@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
+extern int		*__errno_location(void);
 extern size_t	ft_read(int , void *, size_t);
 
 void	test(const char *path)
@@ -64,7 +65,7 @@ void	test_errno(const char *path)
 
 int	main(void)
 {
-	test("ft_read.asm");
+	test("ft_read.s");
 	test_errno("file.not_found");
 	return (0);
 }

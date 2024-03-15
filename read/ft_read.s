@@ -2,12 +2,12 @@
 ; nasm -f elf64 *.asm
 ; gcc -no-pie main.c *.o
 
-extern __errno_location
 
 section .note.GNU-stack
-
+section .data:
 section .text
 	global ft_read
+	extern __errno_location
 
 ; INPUT
 ; rdi: (int) fd
@@ -29,13 +29,13 @@ ft_read:
 	; rdx already set
 	syscall
 	cmp rax, 0
-	jl _syscallFail
+	jl _syscall_fail
 	ret
 
-_syscallFail:
+_syscall_fail:
 	neg rax
 	push rax
-	call __errno_location
+	call __errno_location wrt ..plt
 	pop qword [rax]
 	mov rax, -1
 	ret
