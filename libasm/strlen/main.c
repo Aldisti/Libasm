@@ -10,11 +10,15 @@ void	test(char *str)
 	printf("[%s] -> [%ld] == %ld\n", str, strlen(str), ft_strlen(str));
 }
 
-int	main(void)
+void	ft_test_strlen(void)
 {
 	test("");
 	test("a");
 	test("abcdefghijklmnopqrstuvwxyz");
+}
+
+int	main(void)
+{
 	return (0);
 }
 

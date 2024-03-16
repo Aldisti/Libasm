@@ -20,10 +20,14 @@ void	test(char *str)
 	free(dup);
 }
 
-int	main(void)
+void	ft_test_strdup(void)
 {
 	test("");
 	test("ciao");
+}
+
+int	main(void)
+{
 	return (0);
 }
 
