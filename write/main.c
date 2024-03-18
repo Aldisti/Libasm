@@ -17,37 +17,41 @@ void	test(int fd, char *str)
 	write(fd, "|\n", 2);
 }
 
-void	test_errno(void)
+void	test_errno(int fd)
 {
-	int		fd;
 	int		ret;
 	int		size;
 	char	buf[] = "some buffer";
 
-	fd = -1;
-	ret = 0;
 	size = strlen(buf);
+
+	printf("--------------------\n");
+	ret = 0;
 	ret = write(fd, buf, size);
 	printf("| ret: %d errno: %d | %s\n", ret, errno, strerror(errno));
 
-	fd = -1;
 	ret = 0;
-	size = strlen(buf);
 	ret = ft_write(fd, buf, size);
 	printf("| ret: %d errno: %d | %s\n", ret, errno, strerror(errno));
+	printf("--------------------\n");
+}
 
+void	test_errno_max(void)
+{
+	int		fd;
+	int		ret;
+	char	*buf;
 
-	fd = open("a.out", O_RDONLY);
-	ret = 0;
-	size = strlen(buf);
-	ret = write(fd, buf, size);
+	buf = malloc(2147483000);
+	bzero(buf, 2147483000);
+	fd = open("test.out", O_RDWR);
+	printf("--------------------\n");
+	ret = write(fd, buf, 2147483000);
 	printf("| ret: %d errno: %d | %s\n", ret, errno, strerror(errno));
-
-	fd = open("a.out", O_RDONLY);
-	ret = 0;
-	size = strlen(buf);
-	ret = ft_write(fd, buf, size);
+	ret = ft_write(fd, buf, 2147483000);
 	printf("| ret: %d errno: %d | %s\n", ret, errno, strerror(errno));
+	printf("--------------------\n");
+
 }
 
 int	main(void)
@@ -56,7 +60,10 @@ int	main(void)
 	test(1, "ciao");
 	test(1, "ciao caro come stai?");
 
-	test_errno();
+	test_errno(-1);
+	test_errno(open("test.out", O_RDONLY));
+	test_errno(open("test.out", O_NONBLOCK));
+	test_errno_max();
 	return (0);
 }
 

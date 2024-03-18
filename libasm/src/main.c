@@ -1,5 +1,7 @@
 
 #include <stdio.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -13,6 +15,12 @@ extern size_t   ft_strlen(char *);
 extern size_t   ft_write(int , void *, size_t);
 extern size_t   ft_read(int , void *, size_t);
 
+typedef struct s_list
+{
+	void			*data;
+	struct s_list	*next;
+}	t_list;
+
 void    test_strcmp(char *s1, char *s2)
 {
     printf("|%s - %s: %d %d\n", s1, s2, strcmp(s1, s2), ft_strcmp(s1, s2));
@@ -21,12 +29,12 @@ void    test_strcmp(char *s1, char *s2)
 
 void    ft_test_strcmp(void)
 {
-    test("", "");
-    test("ciao", "");
-    test("ciao", "ciao");
-    test("abc", "cba");
-    test("a", "abc");
-    test("ab", "aBc");
+    test_strcmp("", "");
+    test_strcmp("ciao", "");
+    test_strcmp("ciao", "ciao");
+    test_strcmp("abc", "cba");
+    test_strcmp("a", "abc");
+    test_strcmp("ab", "aBc");
 }
 
 void    ft_test_strcpy(void)
@@ -118,30 +126,32 @@ void    ft_test_write(void)
     test_write(1, "");
     test_write(1, "ciao");
     test_write(1, "ciao caro come stai?");
-    test_errno();
+    test_errno_write();
 }
 
 void    test_read(const char *path)
 {
     int     fd;
-    int     size = 10;
+    int     size = 23;
     char    buf[size];
     int     ret;
 
     bzero(buf, size);
     fd = open(path, O_RDONLY);
-    ret = read(fd, buf, size);
+    ret = read(fd, buf, size - 1);
+	buf[size - 1] = 0;
     close(fd);
-    printf("%s\n---------\t%d\t-----------\n", buf, ret);
+    printf("%s| ret: %d\n", buf, ret);
 
     bzero(buf, size);
     fd = open(path, O_RDONLY);
-    ret = ft_read(fd, buf, size);
+    ret = ft_read(fd, buf, size - 1);
+	buf[size - 1] = 0;
     close(fd);
-    printf("%s\n---------\t%d\t-----------\n", buf, ret);
+    printf("%s| ret: %d\n", buf, ret);
 }
 
-void    test_errno(const char *path)
+void    test_errno_read(const char *path)
 {
     int fd;
     int ret;
@@ -177,17 +187,23 @@ void    test_errno(const char *path)
 
 void    ft_test_read(void)
 {
-    test_read("ft_read.s");
-    test_errno("file.not_found");
+    test_read("Makefile");
+    test_errno_read("file.not_found");
 }
 
 int	main(void)
 {
-	ft_test_strcmp();
-	ft_test_strcpy();
-	ft_test_strdup();
+	printf("\n#-#-#-#-#-#-#-#-#-# strlen #-#-#-#-#-#-#-#-#-#\n\n");
 	ft_test_strlen();
+	printf("\n#-#-#-#-#-#-#-#-#-# strcpy #-#-#-#-#-#-#-#-#-#\n\n");
+	ft_test_strcpy();
+	printf("\n#-#-#-#-#-#-#-#-#-# strcmp #-#-#-#-#-#-#-#-#-#\n\n");
+	ft_test_strcmp();
+	printf("\n#-#-#-#-#-#-#-#-#-# write #-#-#-#-#-#-#-#-#-#\n\n");
 	ft_test_write();
+	printf("\n#-#-#-#-#-#-#-#-#-# read #-#-#-#-#-#-#-#-#-#\n\n");
 	ft_test_read();
+	printf("\n#-#-#-#-#-#-#-#-#-# strdup #-#-#-#-#-#-#-#-#-#\n\n");
+	ft_test_strdup();
 }
 
