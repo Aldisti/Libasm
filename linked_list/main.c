@@ -15,6 +15,9 @@ typedef struct s_list
 extern int		ft_list_size(t_list *);
 extern t_list	*ft_create_elem(void *);
 extern void		ft_list_push_front(t_list **, void *);
+extern t_list	*ft_list_last(t_list *);
+extern void		ft_list_push_back(t_list **, void *);
+extern t_list	*ft_list_push_strs(int size, char **);
 
 t_list	*create_list(int size, void *data)
 {
@@ -116,11 +119,74 @@ void	test_list_push_front(void)
 	delete_list(head);
 }
 
+void	test_list_last(void)
+{
+	t_list	*head = 0;
+	t_list	*last = 0;
+	t_list	*tmp = 0;
+	int		size = 3;
+
+	printf("--- ft_list_last ---\n");
+	// TEST 1
+	head = 0;
+	last = ft_list_last(head);
+	TEST(!last)
+	// TEST 2
+	head = create_list(size, 0);
+	last = ft_list_last(head);
+	tmp = head;
+	while (tmp->next)
+		tmp = tmp->next;
+	TEST(tmp == last)
+	delete_list(head);
+}
+
+void	test_list_push_back(void)
+{
+	t_list	*head = 0;
+	t_list	*last = 0;
+	int		size = 4;
+
+	printf("--- ft_list_push_back ---\n");
+	head = create_list(size - 1, 0);
+	ft_list_push_back(&head, &size);
+	TEST(ft_list_size(head) == size)
+	TEST(*((int *)ft_list_last(head)->data) == size)
+	delete_list(head);
+	head = 0;
+	ft_list_push_back(&head, &size);
+	TEST(ft_list_size(head) == 1)
+	TEST(*((int *)head->data) == size)
+	delete_list(head);
+}
+
+void	test_list_push_strs(void)
+{
+	char	*strs[5];
+	t_list	*head = 0;
+	t_list	*node = 0;
+
+	strs[0] = "ciao";
+	strs[1] = "come";
+	strs[2] = "stai";
+	strs[3] = "?";
+
+	printf("--- ft_list_push_strs ---\n");
+	head = ft_list_push_strs(4, strs);
+	node = head;
+	for (int i = 0; node; i++, node=node->next)
+		TEST((char *)node->data == strs[i])
+	delete_list(head);
+}
+
 int	main(void)
 {
 	test_list_size();
 	test_create_elem();
 	test_list_push_front();
+	test_list_last();
+	test_list_push_back();
+	test_list_push_strs();
 	return (0);
 }
 

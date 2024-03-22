@@ -13,7 +13,7 @@ RM		= rm -f
 	@$(SCC) $(SFLAGS) $< -o $@
 
 $(NAME): $(OBJ)
-	@gcc $(MAIN) $(OBJ) -o $(NAME)
+	@gcc -g $(MAIN) $(OBJ) -o $(NAME)
 
 all: $(NAME)
 
