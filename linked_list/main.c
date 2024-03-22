@@ -18,6 +18,7 @@ extern void		ft_list_push_front(t_list **, void *);
 extern t_list	*ft_list_last(t_list *);
 extern void		ft_list_push_back(t_list **, void *);
 extern t_list	*ft_list_push_strs(int size, char **);
+extern void		ft_list_clear(t_list *, void (*)(void *));
 
 t_list	*create_list(int size, void *data)
 {
@@ -170,13 +171,29 @@ void	test_list_push_strs(void)
 	strs[1] = "come";
 	strs[2] = "stai";
 	strs[3] = "?";
+	strs[4] = 0;
 
 	printf("--- ft_list_push_strs ---\n");
-	head = ft_list_push_strs(4, strs);
+	// TEST 1-4
+	head = ft_list_push_strs(5, strs);
 	node = head;
 	for (int i = 0; node; i++, node=node->next)
 		TEST((char *)node->data == strs[i])
 	delete_list(head);
+}
+
+/*
+	To be sure this works check with
+	valgrind if this function has leaks
+*/
+void	test_list_clear(void)
+{
+	t_list	*head;
+
+	printf("--- ft_list_clear ---\n");
+	head = create_list(5, 0);
+	ft_list_clear(head, free);
+	TEST(42)
 }
 
 int	main(void)
@@ -187,6 +204,7 @@ int	main(void)
 	test_list_last();
 	test_list_push_back();
 	test_list_push_strs();
+	test_list_clear();
 	return (0);
 }
 
