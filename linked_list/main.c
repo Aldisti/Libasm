@@ -19,6 +19,7 @@ extern t_list	*ft_list_last(t_list *);
 extern void		ft_list_push_back(t_list **, void *);
 extern t_list	*ft_list_push_strs(int size, char **);
 extern void		ft_list_clear(t_list *, void (*)(void *));
+extern t_list	*ft_list_at(t_list *, unsigned int);
 
 t_list	*create_list(int size, void *data)
 {
@@ -196,6 +197,27 @@ void	test_list_clear(void)
 	TEST(42)
 }
 
+void	test_list_at(void)
+{
+	t_list	*head = 0;
+	t_list	*node = 0;
+	t_list	*tmp = 0;
+	int		index = 5;
+
+	printf("--- ft_list_at ---\n");
+	head = create_list(7, 0);
+	node = head;
+	// TEST 1
+	tmp = ft_list_at(head, 10);
+	TEST(!tmp)
+	// TEST 2
+	tmp = ft_list_at(head, index);
+	while (index-- > 0)
+		node = node->next;
+	TEST(node == tmp)
+	delete_list(head);
+}
+
 int	main(void)
 {
 	test_list_size();
@@ -205,6 +227,7 @@ int	main(void)
 	test_list_push_back();
 	test_list_push_strs();
 	test_list_clear();
+	test_list_at();
 	return (0);
 }
 

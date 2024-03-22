@@ -27,6 +27,10 @@ exe: fclean $(NAME)
 	@./$(NAME)
 	@$(RM) $(OBJ)
 
+leaks: fclean $(NAME)
+	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	@$(RM) $(OBJ)
+
 re: fclean all
 
-.PHONY: all clean fclean exe re
+.PHONY: all clean fclean exe leaks re

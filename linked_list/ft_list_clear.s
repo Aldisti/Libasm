@@ -8,8 +8,6 @@ section .text
 
 ; void	ft_list_clear(t_list *: rdi, void *: rsi);
 ft_list_clear:
-	push rbx
-
 _start:
 
 	push qword [rdi+8*1]
@@ -23,6 +21,5 @@ _start:
 	cmp rdi, 0
 	jnz _start
 _end:
-	pop rbx
 	ret
 
