@@ -22,6 +22,7 @@ extern void		ft_list_clear(t_list *, void (*)(void *));
 extern t_list	*ft_list_at(t_list *, unsigned int);
 extern void		ft_list_reverse(t_list **);
 extern void		ft_list_foreach(t_list *, void (*)(void *));
+extern void		ft_list_foreach_if(t_list *, void (*)(void *), void *, int (*)());
 
 t_list	*create_list(int size, void *data)
 {
@@ -265,6 +266,40 @@ void	test_list_foreach(void)
 		for (int i = 0; node; node=node->next, i++)
 			TEST(*((int *)node->data) == i + 2)
 	}
+	delete_list(head);
+}
+
+int	_cmp(void *data, void *data_ref)
+{
+	int	*a = 0;
+	int	*b = 0;
+
+	a = (int *)data;
+	b = (int *)data_ref;
+	return (*a % *b == 1);
+}
+
+void	test_list_foreach_if(void)
+{
+	int		arr[] = {1, 2, 3, 5, 7};
+	int		size = (int)(sizeof(arr) / sizeof(int));
+	t_list	*head = 0;
+	int		ref = 2;
+
+	printf("--- ft_list_foreach_if ---\n");
+	head = create_list(size, 0);
+	{
+		t_list	*node = head;
+		for (int i = 0; i < size; i++, node=node->next)
+			node->data = &arr[i];
+	}
+	ft_list_foreach_if(head, _add, &ref, _cmp);
+	{
+		t_list	*node = head;
+		for (int i = 0; node; node=node->next, i++)
+			TEST(*((int *)node->data) % 2 == 0)
+	}
+	delete_list(head);
 }
 
 int	main(void)
@@ -279,6 +314,7 @@ int	main(void)
 	test_list_at();
 	test_list_reverse();
 	test_list_foreach();
+	test_list_foreach_if();
 	return (0);
 }
 
