@@ -20,6 +20,7 @@ extern void		ft_list_push_back(t_list **, void *);
 extern t_list	*ft_list_push_strs(int size, char **);
 extern void		ft_list_clear(t_list *, void (*)(void *));
 extern t_list	*ft_list_at(t_list *, unsigned int);
+extern void		ft_list_reverse(t_list **);
 
 t_list	*create_list(int size, void *data)
 {
@@ -218,6 +219,28 @@ void	test_list_at(void)
 	delete_list(head);
 }
 
+void	test_list_reverse(void)
+{
+	int	arr[] = {1, 2, 3, 4, 5};
+	int	size = (int)sizeof(arr) / sizeof(int);
+	t_list	*head = 0;
+
+	printf("--- ft_list_reverse ---\n");
+	head = create_list(size, 0);
+	{
+		t_list	*node = head;
+		for (int i = 0; i < size; i++, node=node->next)
+			node->data = &arr[i];
+	}
+	ft_list_reverse(&head);
+	{
+		t_list	*node = head;
+		for (int i = size - 1; node; node=node->next, i--)
+			TEST(node->data == &arr[i])
+	}
+	delete_list(head);
+}
+
 int	main(void)
 {
 	test_list_size();
@@ -228,6 +251,7 @@ int	main(void)
 	test_list_push_strs();
 	test_list_clear();
 	test_list_at();
+	test_list_reverse();
 	return (0);
 }
 

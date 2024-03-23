@@ -23,14 +23,18 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 
-exe: fclean $(NAME)
+exe: re
 	@./$(NAME)
 	@$(RM) $(OBJ)
 
-leaks: fclean $(NAME)
+leaks: re
 	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	@$(RM) $(OBJ)
+
+gdb: re
+	@gdb ./$(NAME)
 	@$(RM) $(OBJ)
 
 re: fclean all
 
-.PHONY: all clean fclean exe leaks re
+.PHONY: all clean fclean exe leaks gdb re
