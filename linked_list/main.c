@@ -24,6 +24,13 @@ extern void		ft_list_reverse(t_list **);
 extern void		ft_list_foreach(t_list *, void (*)(void *));
 extern void		ft_list_foreach_if(t_list *, void (*)(void *), void *, int (*)());
 extern t_list	*ft_list_find(t_list *, void *, int (*)());
+extern void		ft_list_remove_if(t_list **, void *, int (*)(), void (*)(void *));
+extern void		ft_list_merge(t_list **, t_list *);
+extern t_list	*ft_list_min(t_list *, int (*)());
+extern void		ft_list_pop(t_list **, t_list *);
+extern void		ft_list_sort(t_list **, int (*)());
+
+extern void		print_list(t_list *);
 
 t_list	*create_list(int size, void *data)
 {
@@ -64,6 +71,20 @@ void	delete_list(t_list *list)
 		free(list);
 		list = tmp;
 	}
+}
+
+void	print_list(t_list *head)
+{
+	t_list	*node;
+	int		tmp;
+
+	node = head;
+	while (node)
+	{
+		printf("|%d", *((int *)node->data));
+		node = node->next;
+	}
+	printf("|\n");
 }
 
 void	test_list_size(void)
@@ -303,7 +324,11 @@ void	test_list_foreach_if(void)
 
 int	_equal(void *data, void *data_ref)
 {
-	return (*((int *)data) != *((int *)data_ref));
+	int	a = *((int *)data);
+	int	b = *((int *)data_ref);
+
+//	printf("%d != %d -> %d\n", a, b, a != b);
+	return (a != b);
 }
 
 void	test_list_find(void)
@@ -333,6 +358,159 @@ void	test_list_find(void)
 	delete_list(head);
 }
 
+void	_free_fct(void *data)
+{
+	free(data);
+	data = 0;
+}
+
+void	test_list_remove_if(void)
+{
+	t_list	*head;
+	t_list	*node;
+	int		n;
+
+	printf("--- ft_list_remove_if ---\n");
+	head = create_list(10, 0);
+	node = head;
+	for (int i = 0; node; i++, node=node->next)
+	{
+		node->data = malloc(sizeof(int));
+		*((int *)node->data) = i % 2;
+	}
+//	print_list(head);
+	// TEST 1
+	n = 0;
+	ft_list_remove_if(&head, &n, _equal, _free_fct);
+	TEST(ft_list_size(head) == 5)
+//	print_list(head);
+	// TEST 2
+	n = 2;
+	ft_list_remove_if(&head, &n, _equal, _free_fct);
+	TEST(ft_list_size(head) == 5)
+//	print_list(head);
+	// TEST 2
+	n = 1;
+	ft_list_remove_if(&head, &n, _equal, _free_fct);
+	TEST(!head)
+//	print_list(head);
+	for (node=head; node; node=node->next)
+		free(node->data);
+	delete_list(head);
+}
+
+void	test_list_merge(void)
+{
+	t_list	*head = 0;
+	t_list	*head_pend = 0;
+	t_list	*node = 0;
+	int		ret = 0;
+
+	printf("--- ft_list_merge ---\n");
+	// TEST 1
+	head_pend = create_list(5, 0);
+	ft_list_merge(&head, head_pend);
+	ret = ft_list_size(head);
+	TEST(head && ret == 5)
+	// TEST 2
+	ft_list_merge(&head, create_list(10, 0));
+	ret = ft_list_size(head);
+	TEST(head && ret == 15)
+	delete_list(head);
+}
+
+int	_diff(int *a, int *b)
+{
+//	printf("%p - %p\n", a, b);
+//	printf("%d - %d = %d\n", *a, *b, *a - *b);
+	return (*a - *b);
+}
+
+void	test_list_min(void)
+{
+	int		arr[] = {1, 2, 3, 4, 5};
+	t_list	*head = 0;
+	t_list	*node = 0;
+
+	printf("--- ft_list_min ---\n");
+	// TEST 1
+	node = ft_list_min(head, _diff);
+	TEST(!node)
+	ft_list_push_back(&head, arr + 4);
+	// TEST 2
+	ft_list_push_back(&head, arr + 3);
+	node = ft_list_min(head, _diff);
+	TEST(node && *((int *)node->data) == 4)
+	// TEST 3
+	ft_list_push_back(&head, arr + 1);
+	node = ft_list_min(head, _diff);
+	TEST(node && *((int *)node->data) == 2)
+	// TEST 4
+	ft_list_push_back(&head, arr + 2);
+	node = ft_list_min(head, _diff);
+	TEST(node && *((int *)node->data) == 2)
+	// TEST 5
+	ft_list_push_back(&head, arr + 0);
+	node = ft_list_min(head, _diff);
+	TEST(node && *((int *)node->data) == 1)
+	delete_list(head);
+}
+
+void	test_list_pop(void)
+{
+	t_list	*head = 0;
+	t_list	*node = 0;
+
+	printf("--- ft_list_pop ---\n");
+	head = create_list(5, 0);
+	// TEST 1
+	node = head;
+	ft_list_pop(&head, node);
+	for (t_list *i = head; i; i = i->next)
+		TEST(i != node)
+	free(node);
+	// TEST 2
+	node = head->next;
+	ft_list_pop(&head, node);
+	for (t_list *i = head; i; i = i->next)
+		TEST(i != node)
+	free(node);
+	delete_list(head);
+}
+
+int	is_sorted(t_list *head)
+{
+	for (; head && head->next; head = head->next)
+		if (*((int *)head->data) > *((int *)head->next->data))
+			return (0);
+	return (1);
+}
+
+void	test_list_sort(void)
+{
+	int		arr[] = {7, 2, 5, 4, 2};
+	int		size = (int)(sizeof(arr) / sizeof(int));
+	t_list	*head = 0;
+	t_list	*node = 0;
+
+	printf("--- ft_list_sort ---\n");
+	head = create_list(size, 0);
+	node = head;
+	for (int i = 0; node && i < size; i++, node=node->next)
+		node->data = &arr[i];
+	// TEST 1
+	ft_list_sort(&node, _diff);
+	TEST(is_sorted(node))
+	// TEST 2
+	ft_list_sort(&head, _diff);
+	TEST(is_sorted(head))
+	// TEST 3
+	ft_list_push_back(&head, arr+4);
+	ft_list_sort(&head, _diff);
+	TEST(is_sorted(head))
+	delete_list(head);
+}
+
 int	main(void)
 {
 	test_list_size();
@@ -347,6 +525,11 @@ int	main(void)
 	test_list_foreach();
 	test_list_foreach_if();
 	test_list_find();
+	test_list_remove_if();
+	test_list_merge();
+	test_list_min();
+	test_list_pop();
+	test_list_sort();
 	return (0);
 }
 
