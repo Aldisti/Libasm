@@ -30,6 +30,7 @@ extern t_list	*ft_list_min(t_list *, int (*)());
 extern void		ft_list_pop(t_list **, t_list *);
 extern void		ft_list_sort(t_list **, int (*)());
 extern void		ft_list_reverse_fun(t_list *);
+extern void		ft_sorted_list_insert(t_list **, void *, int (*)());
 
 extern void		print_list(t_list *);
 
@@ -422,8 +423,6 @@ void	test_list_merge(void)
 
 int	_diff(int *a, int *b)
 {
-//	printf("%p - %p\n", a, b);
-//	printf("%d - %d = %d\n", *a, *b, *a - *b);
 	return (*a - *b);
 }
 
@@ -534,6 +533,22 @@ void	test_list_reverse_fun(void)
 	delete_list(head);
 }
 
+void	test_sorted_list_insert(void)
+{
+	int		arr[] = {7, 2, 5, 7, 6, 9, 0};
+	int		size = (int)(sizeof(arr) / sizeof(int));
+	t_list	*head = 0;
+	t_list	*node = 0;
+
+	printf("--- ft_sorted_list_insert ---\n");
+	node = head;
+	for (int i = 0; i < size; i++)
+		ft_sorted_list_insert(&head, arr + i, _diff);
+	// TEST 1
+	TEST(is_sorted(head))
+	delete_list(head);
+}
+
 int	main(void)
 {
 	test_list_size();
@@ -554,6 +569,7 @@ int	main(void)
 	test_list_pop();
 	test_list_sort();
 	test_list_reverse_fun();
+	test_sorted_list_insert();
 	return (0);
 }
 
