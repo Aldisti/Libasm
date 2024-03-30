@@ -31,6 +31,7 @@ extern void		ft_list_pop(t_list **, t_list *);
 extern void		ft_list_sort(t_list **, int (*)());
 extern void		ft_list_reverse_fun(t_list *);
 extern void		ft_sorted_list_insert(t_list **, void *, int (*)());
+extern void		ft_sorted_list_merge(t_list **, t_list *, int (*)());
 
 extern void		print_list(t_list *);
 
@@ -87,6 +88,7 @@ void	print_list(t_list *head)
 		node = node->next;
 	}
 	printf("|\n");
+	fflush(stdout);
 }
 
 void	test_list_size(void)
@@ -423,6 +425,7 @@ void	test_list_merge(void)
 
 int	_diff(int *a, int *b)
 {
+//	printf("%d - %d = %d\n\n", *a, *b, *a - *b);
 	return (*a - *b);
 }
 
@@ -549,6 +552,37 @@ void	test_sorted_list_insert(void)
 	delete_list(head);
 }
 
+void	test_sorted_list_merge(void)
+{
+	int		arr1[] = {1, 2, 3, 4, 5, 6};
+	int		size1 = (int)(sizeof(arr1) / sizeof(int));
+	int		arr2[] = {7, 8, 9, 10, 11, 12};
+	int		size2 = (int)(sizeof(arr2) / sizeof(int));
+	t_list	*head1 = 0;
+	t_list	*head2 = 0;
+	t_list	*node = 0;
+
+	printf("--- ft_sorted_list_merge ---\n");
+	for (int i = 0; i < size1; i++)
+		ft_list_push_back(&head1, arr1 + i);
+	for (int i = 0; i < size2; i++)
+		ft_list_push_back(&head2, arr2 + i);
+	// TEST 1
+	ft_sorted_list_merge(&head1, head2, _diff);
+	TEST(is_sorted(head1))
+	delete_list(head1);
+	// TEST 2
+	head1 = 0;
+	head2 = 0;
+	for (int i = 0; i < size2; i++)
+		ft_list_push_back(&head1, arr2 + i);
+	for (int i = 0; i < size1; i++)
+		ft_list_push_back(&head2, arr1 + i);
+	ft_sorted_list_merge(&head1, head2, _diff);
+	TEST(is_sorted(head1))
+	delete_list(head1);
+}
+
 int	main(void)
 {
 	test_list_size();
@@ -570,6 +604,7 @@ int	main(void)
 	test_list_sort();
 	test_list_reverse_fun();
 	test_sorted_list_insert();
+	test_sorted_list_merge();
 	return (0);
 }
 
