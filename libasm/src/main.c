@@ -170,14 +170,14 @@ void    test_errno_read(const char *path)
     printf("ret: %d  errno: %d | %s\n", ret, errno, strerror(errno));
 
 
-    fd = open("tmp.out", O_WRONLY);
+    fd = open(path, O_WRONLY);
     ret = 0;
     errno = 0;
     ret = read(fd, buf, 10);
     printf("ret: %d  errno: %d | %s\n", ret, errno, strerror(errno));
     close(fd);
 
-    fd = open("tmp.out", O_WRONLY);
+    fd = open(path, O_WRONLY);
     ret = 0;
     errno = 0;
     ret = ft_read(fd, buf, 10);
