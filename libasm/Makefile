@@ -3,6 +3,9 @@
 NAME	= libasm.a
 BNAME	= libasm_bonus.a
 
+ENAME	= libasm.out
+BENAME	= libasm_bonus.out
+
 ###################################
 ### SOURCE & OBJECT DIRECTORIES ###
 ###################################
@@ -45,19 +48,35 @@ AR		= ar rcs
 RM		= rm -f
 RMDIR	= rm -rf
 
-#############
-### RULES ###
-#############
+##################
+### MAIN RULES ###
+##################
 
 $(NAME): $(OBJS)
 	@$(AR) $(NAME) $(OBJS)
-	@$(CC) $(CFLAGS) $(MAIN) $(NAME)
+	@echo $(NAME) archive created
+	@$(CC) $(CFLAGS) $(MAIN) $(NAME) -o $(ENAME)
 
 all: $(NAME)
 
 bonus: $(BOBJS)
-	$(AR) $(BNAME) $(BOBJS)
-	$(CC) $(CFLAGS) $(BMAIN) $(BNAME)
+	@$(AR) $(BNAME) $(BOBJS)
+	@echo $(BNAME) archive created
+	@$(CC) $(CFLAGS) $(BMAIN) $(BNAME) -o $(BENAME)
+
+############################
+### COMPILE SOURCE FILES ###
+############################
+
+$(OBJDIR)/%.o : $(SRCDIR)/%.s | $(OBJDIR)
+	@$(SC) $(SFLAGS) $< -o $@
+
+$(BOBJDIR)/%.o : $(BSRCDIR)/%.s | $(BOBJDIR)
+	@$(SC) $(SFLAGS) $< -o $@
+
+#################################
+### CREATE OBJECT DIRECTORIES ###
+#################################
 
 $(OBJDIR):
 	@mkdir -p $@
@@ -65,11 +84,9 @@ $(OBJDIR):
 $(BOBJDIR):
 	@mkdir -p $@
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.s | $(OBJDIR)
-	@$(SC) $(SFLAGS) $< -o $@
-
-$(BOBJDIR)/%.o : $(BSRCDIR)/%.s | $(BOBJDIR)
-	$(SC) $(SFLAGS) $< -o $@
+########################
+### CLEAN AND FCLEAN ###
+########################
 
 clean:
 	@$(RM) $(OBJS)
