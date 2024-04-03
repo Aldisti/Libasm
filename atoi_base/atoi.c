@@ -1,15 +1,8 @@
 
 #include <stdio.h>
 
-#define TEST(num, base) printf("%-20s=> %d\n", num, ft_atoi_base(num, base));
+#define TEST_ATOI(num, base) printf("%-20s=> %d\n", num, ft_atoi_base(num, base));
 
-extern int	ft_isspace(char c);
-extern int	ft_strlen(const char *str);
-extern int	ft_in(const char c, const char *str);
-extern int	ft_numlen(const char *num, const char *base);
-extern int	ft_pow(int n, int e);
-extern int	ft_check_base(const char *base);
-extern int	ft_index(char c, const char *base);
 extern int	ft_atoi_base(const char *str, const char *base);
 
 int	main(void)
@@ -21,50 +14,50 @@ int	main(void)
 	const char	base3a[] = "*&/";
 
 	printf("\t----- %s -----\n", base10);
-	TEST("123", base10)
-	TEST("+-+--+123", base10)
-	TEST("---123abc", base10)
-	TEST("", base10)
-	TEST("abc", base10)
-	TEST("--abc", base10)
-	TEST("--abc123", base10)
-	TEST("-- 123", base10)
-	TEST("    123", base10)
-	TEST(" - - - 123", base10)
-	TEST("    -123", base10)
-	TEST("    -abc123", base10)
-	TEST("  abc  123", base10)
-	TEST(" ---+--+1234ab567", base10)
-	TEST("00000", base10)
-	TEST("1", base10)
-	TEST("10", base10)
+	TEST_ATOI("123", base10)
+	TEST_ATOI("+-+--+123", base10)
+	TEST_ATOI("---123abc", base10)
+	TEST_ATOI("", base10)
+	TEST_ATOI("abc", base10)
+	TEST_ATOI("--abc", base10)
+	TEST_ATOI("--abc123", base10)
+	TEST_ATOI("-- 123", base10)
+	TEST_ATOI("    123", base10)
+	TEST_ATOI(" - - - 123", base10)
+	TEST_ATOI("    -123", base10)
+	TEST_ATOI("    -abc123", base10)
+	TEST_ATOI("  abc  123", base10)
+	TEST_ATOI(" ---+--+1234ab567", base10)
+	TEST_ATOI("00000", base10)
+	TEST_ATOI("1", base10)
+	TEST_ATOI("10", base10)
 
 	printf("\t----- %s -----\n", base2);
-	TEST("-01010110", base2)
-	TEST("11111111", base2)
-	TEST("00000000", base2)
-	TEST("-10101010", base2)
-	TEST("-01010101", base2)
-	TEST("00000001", base2)
-	TEST("00000011", base2)
+	TEST_ATOI("-01010110", base2)
+	TEST_ATOI("11111111", base2)
+	TEST_ATOI("00000000", base2)
+	TEST_ATOI("-10101010", base2)
+	TEST_ATOI("-01010101", base2)
+	TEST_ATOI("00000001", base2)
+	TEST_ATOI("00000011", base2)
 
 	printf("\t----- %s -----\n", base2a);
-	TEST("-?h?h?hh?", base2a)
-	TEST("hhhhhhhh", base2a)
-	TEST("????????", base2a)
-	TEST("-h?h?h?h?", base2a)
-	TEST("-?h?h?h?h", base2a)
-	TEST("???????h", base2a)
-	TEST("??????hh", base2a)
+	TEST_ATOI("-?h?h?hh?", base2a)
+	TEST_ATOI("hhhhhhhh", base2a)
+	TEST_ATOI("????????", base2a)
+	TEST_ATOI("-h?h?h?h?", base2a)
+	TEST_ATOI("-?h?h?h?h", base2a)
+	TEST_ATOI("???????h", base2a)
+	TEST_ATOI("??????hh", base2a)
 
 	// 012
 	printf("\t----- %s -----\n", base3);
-	TEST("102", base3)
-	TEST("221102", base3)
+	TEST_ATOI("102", base3)
+	TEST_ATOI("221102", base3)
 
 	// *&/
 	printf("\t----- %s -----\n", base3a);
-	TEST("&*/", base3a)
-	TEST("//&&*/", base3a)
+	TEST_ATOI("&*/", base3a)
+	TEST_ATOI("//&&*/", base3a)
 }
 

@@ -92,12 +92,10 @@ __num_length:
 	mov ebx, eax ; save the return value in nlen
 
 __start:
-b0:
 	cmp ebx, 0 ; if rbx is 0 stop the cycle
 	jz __end
 	dec ebx ; `blen--`
 
-b1:
 	be_call
 	mov edi, r12d ; put blen as first param
 	mov esi, ebx ; put nlen as second param
@@ -107,22 +105,17 @@ b1:
 	mov r11d, eax ; save the power result in tmp
 
 	be_call
-	mov rdi, [rdi]
+	mov rdi, [rdi] ; get the index of the current char in the base
 	call ft_index
 	af_call
 
-	cmp eax, 0
+	cmp eax, 0 ; if the char is not in the base return
 	js __end
 
-;	xor r11d, r11d ; set tmp to 0
-;	mov r11b, [rdi] ; move `num[i]` in tmp
-;	sub r11b, 48 ; subtract 48 to tmp
 	imul eax, r11d ; multiply tmp times `ft_pow(blen, nlen)`
 
-b4:
 	add ecx, eax ; add the product to result
 
-b5:
 	inc rdi
 	jmp __start
 
