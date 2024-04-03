@@ -92,7 +92,7 @@ clean:
 	@$(RM) $(OBJS)
 
 fclean: clean
-	@$(RM) $(NAME) $(BNAME) a.out
+	@$(RM) $(NAME) $(BNAME) $(ENAME) $(BENAME)
 	@$(RMDIR) $(OBJDIR) $(BOBJDIR)
 
 re: fclean all
