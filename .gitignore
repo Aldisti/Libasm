@@ -1,7 +1,5 @@
 # Misc
 **/*.swp
-.vscode
-.idea
 
 # Prerequisites
 *.d
