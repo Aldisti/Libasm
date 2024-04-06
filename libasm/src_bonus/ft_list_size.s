@@ -11,12 +11,12 @@ ft_list_size:
 	xor rax, rax
 	cmp rdi, 0
 	jz _end
-_start:
+__start:
 	inc rax
 	cmp qword [rdi+8], 0
 	jz _end
 	mov rdi, [rdi+8]
-	jmp _start
+	jmp __start
 _end:
 	ret
 

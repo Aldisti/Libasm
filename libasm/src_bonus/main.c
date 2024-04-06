@@ -6,6 +6,7 @@
 
 #define TEST(statement) (statement) ? write(1, "OK\n", 3) : write(1, "KO\n", 3);
 #define TEST_ATOI(num, base) printf("%-20s=> %d\n", num, ft_atoi_base(num, base));
+#define TEST_ATOI_BASE(num, base) printf("%-20s=> %d\n", (base) ? base : "", ft_atoi_base(num, base));
 
 typedef struct s_list
 {
@@ -633,6 +634,18 @@ void	test_atoi_base(void)
 	printf("\t----- %s -----\n", base3a);
 	TEST_ATOI("&*/", base3a)
 	TEST_ATOI("//&&*/", base3a)
+
+	// invalid bases
+	printf("\t----- invalid bases -----\n");
+	TEST_ATOI_BASE("1234", "01234567890")
+	TEST_ATOI_BASE("1234", "123+21")
+	TEST_ATOI_BASE("1234", "21111-")
+	TEST_ATOI_BASE("1234", " 21111")
+	TEST_ATOI_BASE("1234", "0")
+	TEST_ATOI_BASE("1234", "")
+	TEST_ATOI_BASE("1234", 0)
+	TEST_ATOI_BASE("", "01")
+	printf("\t\t    => %d\n", ft_atoi_base(NULL, "01"));
 }
 
 int	main(void)

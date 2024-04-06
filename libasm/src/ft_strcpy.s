@@ -27,14 +27,14 @@ ft_strcpy:
 	mov rax, rdi
 	push rdi
 
-_start:
+__start:
 	mov bl, [rsi]
 	mov [rax], bl
 	cmp byte [rsi], 0
 	je _end
 	inc rax
 	inc rsi
-	jmp _start
+	jmp __start
 _end:
 	pop rax
 	pop rbx

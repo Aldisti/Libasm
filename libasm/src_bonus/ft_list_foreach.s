@@ -13,7 +13,7 @@ ft_list_foreach:
 	cmp rdi, rsi
 	je _end
 
-_start:
+__start:
 	push rdi
 	push rsi
 
@@ -26,7 +26,7 @@ _start:
 	mov rdi, [rdi+8]
 
 	cmp rdi, 0
-	jnz _start
+	jnz __start
 _end:
 	ret
 

@@ -19,12 +19,12 @@ section .text
 ; rax: the string length
 ft_strlen:
 	mov rax, 0
-_start:
+__start:
 	cmp byte [rdi], 0
 	je _end
 	inc rdi
 	inc rax
-	jmp _start
+	jmp __start
 _end:
 	ret
 

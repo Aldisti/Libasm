@@ -11,11 +11,11 @@ ft_list_last:
 	mov rax, rdi
 	cmp rax, 0
 	jz _end
-_start:
+__start:
 	cmp qword [rax+8], 0
 	jz _end
 	mov rax, [rax+8]
-	jmp _start
+	jmp __start
 _end:
 	ret
 

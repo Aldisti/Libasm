@@ -8,7 +8,7 @@ section .text
 
 ; void	ft_list_clear(t_list *: rdi, void *: rsi);
 ft_list_clear:
-_start:
+__start:
 
 	push qword [rdi+8*1]
 	push rsi
@@ -19,7 +19,7 @@ _start:
 	pop rdi
 
 	cmp rdi, 0
-	jnz _start
+	jnz __start
 _end:
 	ret
 

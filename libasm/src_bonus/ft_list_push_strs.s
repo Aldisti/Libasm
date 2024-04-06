@@ -18,7 +18,7 @@ ft_list_push_strs:
 	mov rcx, rsi ; move the strings array into rcx
 	xor rbx, rbx ; initialize rbx to 0
 
-_start:
+__start:
 	cmp qword rbx, [rsp] ; check if we pushed all strings
 	je _end
 
@@ -31,7 +31,7 @@ _start:
 	pop rcx ; retrieve the array of strings
 
 	inc rbx
-	jmp _start
+	jmp __start
 _end:
 	pop rdi
 	pop rbx
